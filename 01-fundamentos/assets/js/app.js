@@ -10,7 +10,6 @@ let a = 10,
     d = 'Spiderman'
     x = a + b;
 
-
 const saludo = c + d;
 
 console.log(saludo)
