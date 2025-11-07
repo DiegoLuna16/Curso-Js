@@ -1,5 +1,26 @@
-alert('Hola mundo');
+// 2C = Two of Clubs 
+// 2D = Two of Diamonds 
+// 2h = Two of Hearts 
+// 2s = Two of Spades 
 
-let nombre = prompt('Cual es tu nombre','Sin nombre')
+let deck = [];
+const tipos = ['C','D','H','S']
+const especiales = ['A','J','Q','K']
 
-confirm('Estas seguro de borrar esto?')
+const crearDeck = () => {
+    for (let i = 2; i <= 10; i++){
+        for(let tipo of tipos){
+            deck.push(i + tipo)
+        }
+    }
+    for(let tipo of tipos) {
+        for( let especial of especiales){
+            deck.push(tipo + especial)
+        }
+    }
+    deck = _.shuffle(deck);
+    return deck;
+
+}
+
+crearDeck()
