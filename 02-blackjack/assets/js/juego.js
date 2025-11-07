@@ -1,38 +1,43 @@
-// 2C = Two of Clubs 
-// 2D = Two of Diamonds 
-// 2h = Two of Hearts 
-// 2s = Two of Spades 
+// 2C = Two of Clubs
+// 2D = Two of Diamonds
+// 2h = Two of Hearts
+// 2s = Two of Spades
 
 let deck = [];
-const tipos = ['C','D','H','S']
-const especiales = ['A','J','Q','K']
+const tipos = ["C", "D", "H", "S"];
+const especiales = ["A", "J", "Q", "K"];
 
 const crearDeck = () => {
-    for (let i = 2; i <= 10; i++){
-        for(let tipo of tipos){
-            deck.push(i + tipo)
-        }
+  for (let i = 2; i <= 10; i++) {
+    for (let tipo of tipos) {
+      deck.push(i + tipo);
     }
-    for(let tipo of tipos) {
-        for( let especial of especiales){
-            deck.push(tipo + especial)
-        }
+  }
+  for (let tipo of tipos) {
+    for (let especial of especiales) {
+      deck.push(tipo + especial);
     }
-    deck = _.shuffle(deck);
-    return deck;
+  }
+  deck = _.shuffle(deck);
+  return deck;
+};
 
-}
-
-crearDeck()
+crearDeck();
 
 // Esta funcion me permite tomar una carta
 const pedirCarta = () => {
+  if (deck.length === 0) {
+    throw "No hay cartas en el deck";
+  }
+  return deck.pop();
+};
 
-    if (deck.length === 0 ){
-        throw 'No hay cartas en el deck'
-    }
-    return deck.pop()
-}
+pedirCarta();
 
-pedirCarta()
+const valorCarta = (carta) => {
+  return isNaN(valorCarta) ? (valorCarta === "A" ? 11 : 10) : valorCarta * 1;
+};
+
+
+
 
