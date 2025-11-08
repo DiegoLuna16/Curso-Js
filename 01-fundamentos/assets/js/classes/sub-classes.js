@@ -34,11 +34,20 @@ class Persona {
   }
 }
 
-const diego = new Persona("Diego", "Luna", "Helloo");
-console.log(diego);
-diego.quienSoy();
-diego.setComidaFavorita = "Bolas de Arroz";
-console.log(diego.getComidaFavorita);
-console.log(Persona._conteo);
+
+class Heroe extends Persona{
+    clan = 'Sin clan';
+
+    constructor(nombre, codigo, frase){
+        super(nombre,codigo,frase);
+        this.clan = 'Avengers'
+    }
+
+    quienSoy () {
+        super.quienSoy()
+    }
+}
 
 
+const spiderman = new Heroe("Peter", "Spiderman", "Soy un heroe");
+console.log(spiderman);
