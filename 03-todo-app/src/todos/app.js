@@ -1,46 +1,51 @@
-import html from './app.html?raw'
-import todoStore from '../store/todo.store'
-import { renderTodos } from './use-cases/render-todos'
-import { Todo } from './models/todo.model'
-
+import html from "./app.html?raw";
+import todoStore from "../store/todo.store";
+import { renderTodos } from "./use-cases/render-todos";
+import { Todo } from "./models/todo.model";
 
 const ElementIDs = {
-    TodoList: '.todo-list',
-    NewTodoInput: '#new-todo-input'
-}
+  TodoList: ".todo-list",
+  NewTodoInput: "#new-todo-input",
+};
 
 export const App = (elementId) => {
+  const displayTodos = () => {
+    const todos = todoStore.getTodos(todoStore.getCurrentFilter());
+    renderTodos(ElementIDs.TodoList, todos);
+  };
 
-    const displayTodos = () => {
-        const todos = todoStore.getTodos(todoStore.getCurrentFilter());
-        renderTodos(ElementIDs.TodoList, todos)
+  (() => {
+    const app = document.createElement("div");
+    app.innerHTML = html;
+    document.querySelector(elementId).append(app);
+    displayTodos();
+  })();
+
+  //ReferenciaS HTML
+  const newDescriptionInput = document.querySelector(ElementIDs.NewTodoInput);
+  const todoListUL = document.querySelector(ElementIDs.TodoList);
+
+  //Listener
+  newDescriptionInput.addEventListener("keyup", (evt) => {
+    if (evt.keyCode !== 13) return;
+    if (evt.target.value.trim().length === 0) return;
+    todoStore.addTodo(evt.target.value);
+    displayTodos();
+    evt.target.value = "";
+  });
+
+  todoListUL.addEventListener("click", (evt) => {
+    const element = evt.target.closest("[data-id]");
+    todoStore.toggleTodo(element.getAttribute("data-id"));
+    displayTodos();
+  });
+
+  todoListUL.addEventListener("click", (evt) => {
+    const element = evt.target.closest("[data-id]");
+    const button = document.querySelector(".destroy");
+    if (evt.target.getAttribute("class") === button.classList[0]) {
+      todoStore.deleteTodo(element.getAttribute('data-id'));
     }
-
-
-    (() => {
-        const app = document.createElement('div');
-        app.innerHTML = html
-        document.querySelector(elementId).append(app)
-        displayTodos()
-    })();
-
-    //ReferenciaS HTML
-    const newDescriptionInput = document.querySelector(ElementIDs.NewTodoInput);
-    const todoListUL = document.querySelector(ElementIDs.TodoList)
-
-    //Listener
-    newDescriptionInput.addEventListener('keyup', (evt) => {
-        if( evt.keyCode !== 13 ) return;
-        if(evt.target.value.trim().length === 0) return;
-        todoStore.addTodo(evt.target.value);
-        displayTodos();     
-        evt.target.value = ''   
-    })
-
-    todoListUL.addEventListener('click', (evt) => {
-        const element = evt.target.closest('[data-id]');
-        todoStore.toggleTodo(element.getAttribute('data-id'));
-        displayTodos();
-    })
-
-}
+    displayTodos();
+  });
+};
