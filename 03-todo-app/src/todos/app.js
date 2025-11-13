@@ -1,6 +1,7 @@
 import html from './app.html?raw'
 import todoStore from '../store/todo.store'
 import { renderTodos } from './use-cases/render-todos'
+import { Todo } from './models/todo.model'
 
 
 const ElementIDs = {
@@ -25,6 +26,7 @@ export const App = (elementId) => {
 
     //ReferenciaS HTML
     const newDescriptionInput = document.querySelector(ElementIDs.NewTodoInput);
+    const todoListUL = document.querySelector(ElementIDs.TodoList)
 
     //Listener
     newDescriptionInput.addEventListener('keyup', (evt) => {
@@ -33,6 +35,12 @@ export const App = (elementId) => {
         todoStore.addTodo(evt.target.value);
         displayTodos();     
         evt.target.value = ''   
+    })
+
+    todoListUL.addEventListener('click', (evt) => {
+        const element = evt.target.closest('[data-id]');
+        todoStore.toggleTodo(element.getAttribute('data-id'));
+        displayTodos();
     })
 
 }
