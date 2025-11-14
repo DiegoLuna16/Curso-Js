@@ -1,7 +1,8 @@
 import html from "./app.html?raw";
 import todoStore from "../store/todo.store";
 import { Filters } from "../store/todo.store";
-import { renderTodos } from "./use-cases/render-todos";
+import { renderTodos} from "./use-cases/render-todos";
+import { renderPending} from "./use-cases/render-pending";
 import { Todo } from "./models/todo.model";
 
 const ElementIDs = {
@@ -9,19 +10,26 @@ const ElementIDs = {
   NewTodoInput: "#new-todo-input",
   ClearedCompleted: ".clear-completed",
   TodoFilters: ".filtro",
+  PendingCountLabel: '#pending-count',
 };
 
 export const App = (elementId) => {
   const displayTodos = () => {
     const todos = todoStore.getTodos(todoStore.getCurrentFilter());
     renderTodos(ElementIDs.TodoList, todos);
+    updatePendingCount()
   };
+
+  const updatePendingCount = () => {
+    renderPending(ElementIDs.PendingCountLabel);
+  }
 
   (() => {
     const app = document.createElement("div");
     app.innerHTML = html;
     document.querySelector(elementId).append(app);
     displayTodos();
+    
   })();
 
   //ReferenciaS HTML
