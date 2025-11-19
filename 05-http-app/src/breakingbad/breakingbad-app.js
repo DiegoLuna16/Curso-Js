@@ -5,7 +5,7 @@ const fetchCharacter = async () => {
   );
 
   const data = await res.json()
-  return data.name;
+  return data;
 };
 
 /**
@@ -16,8 +16,26 @@ export const BreakingBadApp = async(element) => {
   document.querySelector("#app-title").innerHTML = "BreakingBad App";
   element.innerHTML = "Loading...";
   const data = await fetchCharacter()
-  console.log(data );
-
+  const characterLabel = document.createElement('blockquote')
+  const nicknameLabel = document.createElement('h3')
+  const nextCharacterButton = document.createElement('button')
+  nextCharacterButton.innerText = 'Next Character'
+  
+  const renderCharacter = (character) => {
+      characterLabel.innerHTML = `Name: ${character.name}`;
+      nicknameLabel.innerHTML = `Nickname: ${character.nickname}`
+      
+      element.replaceChildren(characterLabel,nicknameLabel,nextCharacterButton);
+      
+    }
+    
+    renderCharacter(await fetchCharacter())
+    
+    nextCharacterButton.addEventListener('click', async() => {
+        element.innerHTML = "Loading...";
+        const character = await fetchCharacter()
+        renderCharacter(character)
+    })
 };
 
 const getRandom1to12 = () => {
