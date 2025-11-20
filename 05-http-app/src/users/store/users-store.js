@@ -11,10 +11,17 @@ const loadNextPage = async () => {
   
   state.currentPage += 1;
   state.users = users;
-  console.log(state);
+  console.log(state.users);
 };
 
-const loadPreviousPage = async () => {};
+const loadPreviousPage = async () => {
+  if (state.currentPage === 1) return;
+  const users = await loadUsersByPage(state.currentPage - 1);
+  
+  state.currentPage -= 1;
+  state.users = users;
+  
+};
 
 const onUserChanged = () => {};
 

@@ -10,6 +10,9 @@ export const loadUsersByPage = async(page = 1) => {
     const res = await fetch(url);
     const data = await res.json();
 
+    if (page > data.pages) return [];
+
+
     const users = data.data.map(localhostUserToModel)
     return users;
 }
