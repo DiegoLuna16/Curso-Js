@@ -12,7 +12,7 @@ export class User {
     lastName,
     gender,
   }) {
-    this.id = +id;
+    this.id = id;
     this.isActive = isActive;
     this.balance = balance;
     this.avatar = avatar;
