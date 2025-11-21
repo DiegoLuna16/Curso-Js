@@ -1,4 +1,5 @@
 import usersStore from "../../store/users-store";
+import { deleteUserById } from "../../use-cases/delete-user-by-id";
 import { showModal } from "../render-modal/render-modal";
 import "./render-table.css";
 
@@ -25,12 +26,25 @@ const createTable = () => {
 };
 
 const tableSelectedListener = (evt) => {
-  const element = evt.target.closest('.select-user')
-  console.log(element);
-  if(!element) return;
-  const id = element.getAttribute('data-id')
-  showModal(id)
-}
+  const element = evt.target.closest(".select-user");
+  if (!element) return;
+  const id = element.getAttribute("data-id");
+  showModal(id);
+};
+
+const tableDeleteListener = async (evt) => {
+  const element = evt.target.closest(".delete-user");
+  if (!element) return;
+  const id = element.getAttribute("data-id");
+  try {
+    await deleteUserById(id);
+    await usersStore.reloadPage();
+    document.querySelector('#current-page').innerText = usersStore.getCurrentPage()
+    renderTable()
+  } catch (error) {
+    alert("No se pudo eliminar");
+  }
+};
 
 /**
  *
@@ -42,7 +56,8 @@ export const renderTable = (element) => {
     table = createTable();
     element.append(table);
 
-    table.addEventListener('click', tableSelectedListener)
+    table.addEventListener("click", tableSelectedListener);
+    table.addEventListener("click", tableDeleteListener );
 
     //TODO: Listener a la table
   }
@@ -57,9 +72,9 @@ export const renderTable = (element) => {
             <td>${user.lastName}</td>
             <td>${user.isActive}</td>
             <td>
-                <a href="#/" class='select-user' data-id="${ user.id }">Select</a>
+                <a href="#/" class='select-user' data-id="${user.id}">Select</a>
                 |
-                <a href="#/" class='delete-user' data-id="${ user.id }">Delete</a>
+                <a href="#/" class='delete-user' data-id="${user.id}">Delete</a>
             </td>
            
         </tr>
@@ -67,5 +82,5 @@ export const renderTable = (element) => {
         `;
   });
 
-  table.querySelector('tbody').innerHTML = tableHTML
+  table.querySelector("tbody").innerHTML = tableHTML;
 };
