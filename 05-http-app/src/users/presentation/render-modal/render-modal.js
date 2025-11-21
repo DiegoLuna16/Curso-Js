@@ -14,7 +14,7 @@ export const hideModal = () => {
   form?.reset();
 };
 
-export const renderModal = (element) => {
+export const renderModal = (element, callback) => {
   if (modal) return;
 
   modal = document.createElement("div");
@@ -23,7 +23,7 @@ export const renderModal = (element) => {
 
   form = modal.querySelector("form");
 
-  form.addEventListener("submit", (evt) => {
+  form.addEventListener("submit", async(evt) => {
     evt.preventDefault();
 
     const formData = new FormData(form);
@@ -42,6 +42,8 @@ export const renderModal = (element) => {
 
       userLike[key] = value;
     }
+
+    await callback(userLike)
     hideModal()
   });
 
